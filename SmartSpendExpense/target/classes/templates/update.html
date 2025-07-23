@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Update Expense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+          min-height: 100vh;
+          background-image: url('https://images.unsplash.com/photo-1611262588024-d12430b98928?auto=format&fit=crop&w=1740&q=80');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+        }
+
+        body::before {
+          content: "";
+          position: fixed;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          background: rgba(255, 255, 255, 0.7);
+          z-index: -1;
+        }
+
+        select, input[type="text"], input[type="number"], input[type="date"] {
+          background-color: #fffbe6;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-wrap">
+        <!-- Sidebar -->
+        <aside class="w-full md:w-1/5 bg-gradient-to-b from-purple-700 to-indigo-800 text-white p-4 rounded-xl shadow-xl">
+            <h4 class="text-2xl font-bold mb-4">DASHBOARD</h4>
+            <ul class="space-y-2">
+                <li><a href="/expense/index" class="block px-3 py-2 rounded hover:bg-indigo-600 font-semibold">HOME</a></li>
+                <li><a href="/expense/add" class="block px-3 py-2 rounded hover:bg-indigo-600 font-semibold">ADD EXPENSE</a></li>
+                <li><a href="/expense/display" class="block px-3 py-2 rounded hover:bg-indigo-600 font-semibold">TRACK EXPENSE</a></li>
+                <li><a href="/logout" class="block px-3 py-2 rounded hover:bg-indigo-600 font-semibold">LOGOUT</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="w-full md:w-4/5 p-6">
+            <form th:object="${expense}" th:action="@{/expense/save}" method="post"
+                  class="bg-white bg-opacity-90 p-6 rounded-lg shadow-lg backdrop-blur-md">
+                <h1 class="text-3xl font-bold text-center mb-6 text-indigo-800">🧾 Update Expense</h1>
+
+                <input type="hidden" class="hidden" th:field="*{id}" />
+
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label class="font-semibold">Title</label>
+                        <input type="text" class="form-input w-full mt-1 border border-purple-500 rounded px-3 py-2"
+                               th:field="*{title}" />
+                    </div>
+
+                    <div>
+                        <label class="font-semibold">Amount</label>
+                        <input type="number" class="form-input w-full mt-1 border border-purple-500 rounded px-3 py-2"
+                               th:field="*{amount}" />
+                    </div>
+
+                    <div>
+                        <label class="font-semibold">Category</label>
+                        <select th:field="*{category}"
+                                class="form-select w-full mt-1 border border-purple-500 rounded px-3 py-2">
+                            <option value="food" th:field="*{category}">Food</option>
+                            <option value="entertainment" th:field="*{category}">Entertainment</option>
+                            <option value="travel" th:field="*{category}">Travel</option>
+                            <option value="medical" th:field="*{category}">Medical</option>
+                            <option value="others" th:field="*{category}">Others</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="font-semibold">Type</label><br />
+                        <label class="inline-flex items-center mr-4 mt-2">
+                            <input type="radio" value="expense" th:field="*{type}" class="mr-1" />
+                            Expense
+                        </label>
+                        <label class="inline-flex items-center mt-2">
+                            <input type="radio" value="income" th:field="*{type}" class="mr-1" />
+                            Income
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="font-semibold">Date</label>
+                        <input type="date" class="form-input w-full mt-1 border border-purple-500 rounded px-3 py-2"
+                               th:field="*{date}" />
+                    </div>
+
+                    <div>
+                        <label class="font-semibold">Description</label>
+                        <input type="text" class="form-input w-full mt-1 border border-purple-500 rounded px-3 py-2"
+                               th:field="*{description}" />
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-6 mt-6">
+                    <button type="submit"
+                            class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded shadow">
+                        Submit
+                    </button>
+                    <a href="/expense/display"
+                       class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded shadow">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

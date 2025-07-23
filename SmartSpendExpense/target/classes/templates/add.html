@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Add Expense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+          background-image: url('https://images.unsplash.com/photo-1605902711622-cfb43c4437d1?auto=format&fit=crop&w=1740&q=80');
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-attachment: fixed;
+        }
+        body::before {
+          content: "";
+          position: fixed;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          background: rgba(255, 255, 255, 0.6);
+          z-index: -1;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen text-gray-800">
+<div class="flex min-h-screen bg-gray-100 bg-opacity-80">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-800 text-white p-6 hidden md:block">
+        <h1 class="text-xl font-bold mb-6">DASHBOARD</h1>
+        <nav>
+            <ul class="space-y-4">
+                <li>
+                    <a href="/expense/index" class="text-gray-300 hover:text-white font-semibold block">
+                        HOME
+                    </a>
+                </li>
+                <li>
+                    <a href="/expense/add" class="text-gray-300 hover:text-white font-semibold block">
+                        ADD EXPENSE
+                    </a>
+                </li>
+                <li>
+                    <a href="/expense/display" class="text-gray-300 hover:text-white font-semibold block">
+                        TRACK EXPENSE
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout" class="text-gray-300 hover:text-white font-semibold block">
+                        LOGOUT
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-12 bg-white/70 backdrop-blur-md">
+        <section class="max-w-3xl mx-auto mt-12 bg-white p-8 rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-10">Add Expense</h2>
+
+            <form
+                    th:object="${expense}"
+                    th:action="@{/expense/save}"
+                    method="post"
+                    class="space-y-6"
+            >
+                <!-- Title -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <label for="title" class="w-32 font-medium">Title</label>
+                    <input
+                            type="text"
+                            th:field="*{title}"
+                            id="title"
+                            class="flex-1 border border-blue-500 px-4 py-2 rounded"
+                    />
+                </div>
+
+                <!-- Amount -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <label for="amount" class="w-32 font-medium">Amount</label>
+                    <input
+                            type="number"
+                            th:field="*{amount}"
+                            id="amount"
+                            class="flex-1 border border-blue-500 px-4 py-2 rounded"
+                    />
+                </div>
+
+                <!-- Category -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <label for="category" class="w-32 font-medium">Category</label>
+                    <select
+                            th:field="*{category}"
+                            id="category"
+                            class="flex-1 border border-blue-500 px-4 py-2 rounded"
+                    >
+                        <option value="food">Food</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="travel">Travel</option>
+                        <option value="medical">Medical</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+
+                <!-- Type -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <label class="w-32 font-medium">Type</label>
+                    <div class="flex items-center gap-4">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" value="expense" th:field="*{type}" />
+                            <span>Expense</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" value="income" th:field="*{type}" />
+                            <span>Income</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Date -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <label for="date" class="w-32 font-medium">Date</label>
+                    <input
+                            type="date"
+                            th:field="*{date}"
+                            id="date"
+                            class="flex-1 border border-blue-500 px-4 py-2 rounded"
+                    />
+                </div>
+
+                <!-- Description -->
+                <div class="flex flex-col md:flex-row items-center gap-4">
+                    <label for="description" class="w-32 font-medium">Description</label>
+                    <input
+                            type="text"
+                            th:field="*{description}"
+                            id="description"
+                            class="flex-1 border border-blue-500 px-4 py-2 rounded"
+                    />
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-center gap-6 mt-8">
+                    <button
+                            type="submit"
+                            class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+                    >
+                        Submit
+                    </button>
+                    <a
+                            href="/expense/index"
+                            class="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 transition"
+                    >
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+</body>
+</html>

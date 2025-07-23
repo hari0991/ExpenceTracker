@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Expenses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+          background: linear-gradient(to right, #eef2f7, #f5f7fa);
+        }
+    </style>
+</head>
+
+<body class="text-gray-800 font-sans">
+<div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white p-6 hidden md:block shadow-lg">
+        <h4 class="text-2xl font-bold mb-10">DASHBOARD</h4>
+        <nav class="space-y-3">
+            <a href="/expense/index"
+               class="block px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white font-medium">
+                HOME
+            </a>
+            <a href="/expense/add"
+               class="block px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white font-medium">
+                ADD EXPENSE
+            </a>
+            <a href="/expense/display"
+               class="block px-3 py-2 rounded bg-gray-800 text-white border-l-4 border-blue-500 font-semibold">
+                TRACK EXPENSE
+            </a>
+            <a href="/logout"
+               class="block px-3 py-2 rounded hover:bg-gray-800 text-gray-300 hover:text-white font-medium">
+                LOGOUT
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-10">
+        <section th:if="${#lists.size(listExpense) > 0}">
+            <div class="bg-white/70 backdrop-blur-md rounded-xl shadow-xl p-8">
+                <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">List of Expenses</h1>
+
+                <!-- Filter -->
+                <div class="mb-6 flex justify-center">
+                    <form th:action="@{/expense/display}" method="get" class="w-full max-w-md">
+                        <input
+                                type="text"
+                                name="keyword"
+                                placeholder="Search or filter..."
+                                class="w-full border-2 border-yellow-400 rounded px-4 py-2"
+                        />
+                    </form>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto rounded-lg shadow-sm">
+                    <table class="min-w-full text-sm text-left bg-white">
+                        <thead class="bg-gray-800 text-white text-center">
+                        <tr>
+                            <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=id&sortDir='+${reverseSortDir}}">ID</a></th>
+                            <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=title&sortDir='+${reverseSortDir}}">Title</a></th>
+                            <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=amount&sortDir='+${reverseSortDir}}">Amount</a></th>
+                            <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=category&sortDir='+${reverseSortDir}}">Category</a></th>
+                            <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=type&sortDir='+${reverseSortDir}}">Type</a></th>
+                            <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=date&sortDir='+${reverseSortDir}}">Date</a></th>
+                            <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=description&sortDir='+${reverseSortDir}}">Description</a></th>
+                            <th class="px-4 py-3">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ex : ${listExpense}" class="text-center hover:bg-gray-50 border-b">
+                            <td class="px-4 py-2" th:text="${ex.id}"></td>
+                            <td class="px-4 py-2" th:text="${ex.title}"></td>
+                            <td class="px-4 py-2" th:text="${ex.amount}"></td>
+                            <td class="px-4 py-2" th:text="${ex.category}"></td>
+                            <td class="px-4 py-2" th:text="${ex.type}"></td>
+                            <td class="px-4 py-2" th:text="${ex.date}"></td>
+                            <td class="px-4 py-2" th:text="${ex.description}"></td>
+                            <td class="px-4 py-2 space-x-2">
+                                <a th:href="@{'/expense/update/'+${ex.id}}" class="inline-block px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700">Edit</a>
+                                <a th:href="@{'/expense/delete/'+${ex.id}}" class="inline-block px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">Delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div th:if="${totalPages > 1}" class="mt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+                    <div>Total Rows: [[${totalItems}]]</div>
+                    <div class="space-x-2">
+                <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                  <a th:if="${currentPage != i}" th:href="@{'/expense/page/'+${i}+'?sortField='+${sortField}+'&sortDir='+${sortDir}}" class="px-2 py-1 rounded border border-gray-400 hover:bg-gray-200">[[${i}]]</a>
+                  <span th:unless="${currentPage != i}" class="font-bold text-blue-600">[[${i}]]</span>
+                </span>
+                    </div>
+                    <div class="space-x-4">
+                        <a th:if="${currentPage < totalPages}" th:href="@{'/expense/page/'+(${currentPage + 1})+'?sortField='+${sortField}+'&sortDir='+${sortDir}}" class="text-blue-600 hover:underline">Next</a>
+                        <span th:unless="${currentPage < totalPages}">Next</span>
+                        <a th:if="${currentPage < totalPages}" th:href="@{'/expense/page/'+${totalPages}+'?sortField='+${sortField}+'&sortDir='+${sortDir}}" class="text-blue-600 hover:underline">Last</a>
+                        <span th:unless="${currentPage < totalPages}">Last</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- No Records -->
+        <section th:unless="${#lists.size(listExpense) > 0}" class="text-center mt-20">
+            <h3 class="text-2xl font-semibold">No records to show</h3>
+            <p class="text-gray-500 mt-2">
+                "Save intentionally. Spend consciously. Live freely."
+            </p>
+        </section>
+    </main>
+</div>
+</body>
+</html>
