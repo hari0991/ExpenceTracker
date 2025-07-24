@@ -60,7 +60,7 @@
                     <table class="min-w-full text-sm text-left bg-white">
                         <thead class="bg-gray-800 text-white text-center">
                         <tr>
-                            <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=id&sortDir='+${reverseSortDir}}">ID</a></th>
+<!--                             <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=id&sortDir='+${reverseSortDir}}">ID</a></th> -->
                             <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=title&sortDir='+${reverseSortDir}}">Title</a></th>
                             <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=amount&sortDir='+${reverseSortDir}}">Amount</a></th>
                             <th class="px-4 py-3"><a th:href="@{'/expense/page/'+${currentPage}+'?sortField=category&sortDir='+${reverseSortDir}}">Category</a></th>
@@ -72,7 +72,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="ex : ${listExpense}" class="text-center hover:bg-gray-50 border-b">
-                            <td class="px-4 py-2" th:text="${ex.id}"></td>
+<!--                             <td class="px-4 py-2" th:text="${ex.id}"></td> -->
                             <td class="px-4 py-2" th:text="${ex.title}"></td>
                             <td class="px-4 py-2" th:text="${ex.amount}"></td>
                             <td class="px-4 py-2" th:text="${ex.category}"></td>
